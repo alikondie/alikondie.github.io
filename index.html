@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="wordcloud2.js"></script>
+    <meta charset="utf-8" />
+    <title>D3: Mercator projection applied to oceans</title>
+    <style type="text/css">
+      /* No style rules here yet */
+    </style>
+  </head>
+  <body>
+    <div id="cloud" style="width:640px;height:450px;position:relative;"></div>
+    <script type="text/javascript">
+      var wordCount = [];
+      var wordElements = [];
+      var indexes = [];
+      var text_string =
+        "mmmm Of bbb course cccc that’s your contention. You’re a first year grad student. You just got finished readin’ some Marxian historian, Pete Garrison probably. You’re gonna be convinced of that ’til next month when you get to James Lemon and then you’re gonna be talkin’ about how the economies of Virginia and Pennsylvania were entrepreneurial and capitalist way back in 1740. That’s gonna last until next year. You’re gonna be in here regurgitating Gordon Wood, talkin’ about, you know, the Pre-Revolutionary utopia and the capital-forming effects of military mobilization… ‘Wood drastically underestimates the impact of social distinctions predicated upon wealth, especially inherited wealth.’ You got that from Vickers, Work in Essex County, page 98, right? Yeah, I read that, too. Were you gonna plagiarize the whole thing for us? Do you have any thoughts of your own on this matter? Or do you, is that your thing? You come into a bar. You read some obscure passage and then pretend, you pawn it off as your own, as your own idea just to impress some girls and embarrass my friend? See, the sad thing about a guy like you is in 50 years, you’re gonna start doin’ some thinkin’ on your own and you’re gonna come up with the fact that there are two certainties in life. One: don’t do that. And two: you dropped a hundred and fifty grand on a fuckin’ education you coulda got for a dollar fifty in late charges at the public library.";
+      var words = text_string.split(/[ '\-\(\)\*":;\[\]|{},.!?]+/);
+      //console.log(words);
+      words.forEach(element => {
+        if (wordCount[element]) {
+          wordCount[element]++;
+          // console.log(element,wordCount[element]);
+        } else {
+          //wordCount[element]++;
+          wordCount[element] = 1;
+          //console.log(element,wordCount[element]);
+        }
+      });
+      var i = 0;
+      words.forEach(element => {
+        if (wordCount[element]) {
+          if (!wordElements[element]) {
+            wordElements[element] = [element, wordCount[element] * 500];
+            indexes[i] = wordElements[element];
+            i++;
+          }
+        }
+      });
+      /* console.log(wordElements);
+        console.log(indexes);*/
+      WordCloud(document.getElementById("cloud"), {
+        list: indexes.map(function(word) {
+          //console.log(word);
+          return [word[0], Math.round(word[1] / 50)];
+        })
+      });
+    </script>
+  </body>
+</html>

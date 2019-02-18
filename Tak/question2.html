@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Question2</title>
+		<script type="text/javascript" src="d3.v3.js"></script>
+		<style type="text/css">
+			/* No style rules here yet */		
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+
+			//Width and height
+			var w = 1000;
+			var h = 600;
+
+			//Define map projection
+			var projection = d3.geo.mercator()
+								   .translate([0,0])
+								   .scale([1]);
+								   
+			//projection.s
+
+			//Define path generator
+			var path = d3.geo.path()
+							 .projection(projection);
+
+			//Create SVG element
+			var svg = d3.select("body")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
+
+			//Load in GeoJSON data
+			d3.json("eastEurope.geo.json", function(json) {
+				var b = path.bounds(json);
+				console.log(b);
+				var	s = .95 / Math.max((b[1][0] - b[0][0]) / w , (b[1][1] - b[0][1]) / h);
+				var	t = [(w - s * (b[1][0] + b[0][0])) / 2 , (h - s *(b[1][1] + b[0][1])) / 2];
+				//Bind data and create one path per GeoJSON feature
+				projection.scale(s).translate(t);			
+				svg.selectAll("path")
+				   .data(json.features)
+				   .enter()
+				   .append("path")
+				   .attr("d", path)
+				   .style("fill", "brown")
+				   .on("mouseover",function(){
+						var mouseX = d3.event.clientX;
+						var mouseY = d3.event.clientY;
+						d3.csv("idCountry.csv", function(data) {
+							for(var i = 0;i < json.length;i++){
+								for(var j = 0;j < data.length;j++){
+									if(json.features[i].properties.name == data.name)
+									// afficher le cloud ici 
+								}
+							}
+						});
+			});
+				   ;
+				//svg.selectAll("text").data(json.features.properties.name).enter.
+		
+			});
+
+			
+		</script>
+	</body>
+</html>
